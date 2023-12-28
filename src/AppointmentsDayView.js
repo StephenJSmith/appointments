@@ -1,68 +1,94 @@
-import React, { useState } from 'react';
-
-export const Appointment = ({customer: appointment}) => (
-  <>
-  <table>
-    <tr>
-      <th>Today's appointment at {appointmentTimeOfDay(appointment.startsAt)}</th>
-    </tr>
-    <tr>
-      <td>Customer</td>
-      <td>{appointment.firstName} {appointment.lastName}</td>
-    </tr>
-    <tr>
-      <td>Phone number</td>
-      <td>{appointment.phoneNumber}</td>
-    </tr>
-    <tr>
-      <td>Stylist</td>
-      <td>{appointment.stylist}</td>
-    </tr>
-    <tr>
-      <td>Service</td>
-      <td>{appointment.service}</td>
-    </tr>
-    <tr>
-      <td>Notes</td>
-      <td>{appointment.notes}</td>
-    </tr>
-</table>
-</>
-);
-
-export const AppointmentsDayView = ({appointments}) => {
-  const [selectedAppointment, setSelectedAppointment] = useState(0);
-
-  return (
-  <div id='appointmentsDayView'>
-    <ol>
-      {appointments.map((appointment, i) => (
-        <li key={appointment.startsAt}>
-          <button 
-            className={i === selectedAppointment
-              ? 'toggled'
-              : ''
-            }
-            type='button'
-            onClick={() => setSelectedAppointment(i)}
-          >
-          {appointmentTimeOfDay(appointment.startsAt)}
-          </button>
-        </li>
-      ))}
-      {appointments.length === 0 ? (
-      <p>There are no appointments scheduled for today.</p>
-      ) : (
-        <Appointment { ...appointments[selectedAppointment] } />
-      )}
-    </ol>
-  </div>
-);}
+import React, { useState } from "react";
 
 const appointmentTimeOfDay = (startsAt) => {
   const [h, m] = new Date(startsAt)
     .toTimeString()
-    .split(':');
+    .split(":");
+  return `${h}:${m}`;
+};
 
-    return `${h}:${m}`;
-}
+export const Appointment = ({
+  customer,
+  service,
+  stylist,
+  notes,
+  startsAt,
+}) => (
+  <div id="appointmentView">
+    <h3>
+      Today&rsquo;s appointment at{" "}
+      {appointmentTimeOfDay(startsAt)}
+    </h3>
+    <table>
+      <tbody>
+        <tr>
+          <td>Customer</td>
+          <td>
+            {customer.firstName} {customer.lastName}
+          </td>
+        </tr>
+        <tr>
+          <td>Phone number</td>
+          <td>{customer.phoneNumber}</td>
+        </tr>
+        <tr>
+          <td>Stylist</td>
+          <td>{stylist}</td>
+        </tr>
+        <tr>
+          <td>Service</td>
+          <td>{service}</td>
+        </tr>
+        <tr>
+          <td>Notes</td>
+          <td>{notes}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+export const AppointmentsDayView = ({
+  appointments,
+}) => {
+  const [
+    selectedAppointment,
+    setSelectedAppointment,
+  ] = useState(0);
+
+  return (
+    <div id="appointmentsDayView">
+      <ol>
+        {appointments.map((appointment, i) => (
+          <li key={appointment.startsAt}>
+            <button
+              className={
+                i === selectedAppointment
+                  ? "toggled"
+                  : ""
+              }
+              type="button"
+              onClick={() =>
+                setSelectedAppointment(i)
+              }
+            >
+              {appointmentTimeOfDay(
+                appointment.startsAt
+              )}
+            </button>
+          </li>
+        ))}
+      </ol>
+      {appointments.length === 0 ? (
+        <p>
+          There are no appointments scheduled for
+          today.
+        </p>
+      ) : (
+        <Appointment
+          {...appointments[selectedAppointment]}
+        />
+      )}
+    </div>
+  );
+};
