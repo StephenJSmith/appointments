@@ -1,7 +1,33 @@
 import React, { useState } from 'react';
 
-export const Appointment = ({customer}) => (
-  <div>{customer.firstName}</div>
+export const Appointment = ({customer: appointment}) => (
+  <>
+  <table>
+    <tr>
+      <th>Today's appointment at {appointmentTimeOfDay(appointment.startsAt)}</th>
+    </tr>
+    <tr>
+      <td>Customer</td>
+      <td>{appointment.firstName} {appointment.lastName}</td>
+    </tr>
+    <tr>
+      <td>Phone number</td>
+      <td>{appointment.phoneNumber}</td>
+    </tr>
+    <tr>
+      <td>Stylist</td>
+      <td>{appointment.stylist}</td>
+    </tr>
+    <tr>
+      <td>Service</td>
+      <td>{appointment.service}</td>
+    </tr>
+    <tr>
+      <td>Notes</td>
+      <td>{appointment.notes}</td>
+    </tr>
+</table>
+</>
 );
 
 export const AppointmentsDayView = ({appointments}) => {
@@ -12,7 +38,12 @@ export const AppointmentsDayView = ({appointments}) => {
     <ol>
       {appointments.map((appointment, i) => (
         <li key={appointment.startsAt}>
-          <button type='button'
+          <button 
+            className={i === selectedAppointment
+              ? 'toggled'
+              : ''
+            }
+            type='button'
             onClick={() => setSelectedAppointment(i)}
           >
           {appointmentTimeOfDay(appointment.startsAt)}
