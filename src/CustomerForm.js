@@ -1,24 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 
-export const CustomerForm = ({ original, onSubmit }) => {
+export const CustomerForm = ({
+  original,
+  onSubmit,
+}) => {
+  const [customer, setCustomer] = useState(original);
+
+  const handleChange = ({ target }) =>
+    setCustomer((customer) => ({
+      ...customer,
+      [target.name]: target.value,
+    }));
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(original);
+    onSubmit(customer);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor='firstName'>
-        First name
-      </label>
+      <label htmlFor="firstName">First name</label>
       <input
-        id='firstName'
         type="text"
         name="firstName"
-        value={original.firstName}
-        readOnly
+        id="firstName"
+        value={customer.firstName}
+        onChange={handleChange}
       />
-      <input type='submit' value='Add' />
+      <label htmlFor="lastName">Last name</label>
+      <input
+        type="text"
+        name="lastName"
+        id="lastName"
+        value={customer.lastName}
+        onChange={handleChange}
+      />
+      <label htmlFor="phoneNumber">
+        Phone number
+      </label>
+      <input
+        type="text"
+        name="phoneNumber"
+        id="phoneNumber"
+        value={customer.phoneNumber}
+        onChange={handleChange}
+      />
+      <input type="submit" value="Add" />
     </form>
   );
 };
