@@ -11,17 +11,31 @@ export const initializeReactContainer = () => {
 export const render = (component) =>
   act(() => ReactDOM.createRoot(container).render(component));
 
-export const click = element => 
+export const click = element =>
   act(() => element.click());
 
 export const element = (selector) =>
-  document.querySelector(selector);
+  document.querySelector(selector);
 
 export const elements = (selector) =>
-  Array.from(document.querySelectorAll(selector));
+  Array.from(document.querySelectorAll(selector));
 
 export const typesOf = (elements) =>
-  elements.map((element) => element.type);
+  elements.map((element) => element.type);
 
 export const textOf = (elements) =>
-  elements.map((element) => element.textContent);
+  elements.map((element) => element.textContent);
+
+export const form = (id) => element("form");
+
+export const field = (fieldName) =>
+  form().elements[fieldName];
+
+export const submit = (formElement) => {
+  const event = new Event("submit", {
+    bubbles: true,
+    cancelable: true,
+  });
+  act(() => formElement.dispatchEvent(event));
+  return event;
+};
