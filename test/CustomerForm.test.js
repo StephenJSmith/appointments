@@ -13,6 +13,16 @@ import {
 } from "./reactTestExtensions";
 import { CustomerForm } from "../src/CustomerForm";
 
+const spy = () => {
+  let receivedArguments;
+
+  return {
+    fn: (...args) => (receivedArguments = args),
+    receivedArguments: () => receivedArguments,
+    receivedArgument: n => receivedArguments[n],
+  };
+};
+
 describe("CustomerForm", () => {
   const blankCustomer = {
     firstName: "",
@@ -84,17 +94,19 @@ describe("CustomerForm", () => {
 
   const itSubmitsExistingValue = (fieldName, value) =>
     it("saves existing value when submitted", () => {
-      expect.hasAssertions();
+      const submitSpy = spy();
       const customer = { [fieldName]: value };
       render(
         <CustomerForm
           original={customer}
-          onSubmit={(props) =>
-            expect(props[fieldName]).toEqual(value)
-          }
+          onSubmit={submitSpy.fn}
         />
       );
+
       click(submitButton());
+
+      expect(submitSpy).toBeCalledWith(customer);
+      expect(submitSpy.receivedArgument(0)).toEqual(customer);
     });
 
   const itSubmitsNewValue = (fieldName, value) =>
@@ -158,7 +170,7 @@ describe("CustomerForm", () => {
     render(
       <CustomerForm
         original={blankCustomer}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       />
     );
 
