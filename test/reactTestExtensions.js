@@ -25,6 +25,12 @@ export const submit = (formElement) => {
   return event;
 };
 
+export const submitButton = () =>
+  element("input[type=submit]");
+
+export const submitAndWait = async (formElement) =>
+  act(async () => submit(formElement));
+
 const originalValueProperty = (reactElement) => {
   const prototype =
     Object.getPrototypeOf(reactElement);
@@ -63,8 +69,8 @@ export const form = (id) => element("form");
 export const field = (fieldName) =>
   form().elements[fieldName];
 
-export const submitButton = () =>
-  element("input[type=submit]");
-
 export const labelFor = (formElement) =>
   element(`label[for=${formElement}]`);
+
+export const clickAndWait = async (element) =>
+  act(async () => click(element));
