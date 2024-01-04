@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-const Error = ({hasError}) => (
+const Error = ({ hasError }) => (
   <p role="alert">
-    {hasError ? 'An error occurred during save.' : ''}
+    {hasError ? "An error occurred during save." : ""}
   </p>
 );
 
@@ -10,8 +10,9 @@ export const CustomerForm = ({
   original,
   onSave,
 }) => {
-  const [customer, setCustomer] = useState(original);
   const [error, setError] = useState(false);
+
+  const [customer, setCustomer] = useState(original);
 
   const handleChange = ({ target }) =>
     setCustomer((customer) => ({
@@ -21,13 +22,14 @@ export const CustomerForm = ({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await global.fetch('/customers', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
+    const result = await global.fetch("/customers", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(customer),
     });
     if (result.ok) {
+      setError(false);
       const customerWithId = await result.json();
       onSave(customerWithId);
     } else {

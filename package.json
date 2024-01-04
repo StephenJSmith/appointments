@@ -31,6 +31,10 @@
     "globals": {
       "IS_REACT_ACT_ENVIRONMENT": true
     },
-    "setupFilesAfterEnv": ["./test/domMatchers.js"]
+    "setupFilesAfterEnv": [
+      "./test/domMatchers.js",
+      "./test/globals.js"
+    ],
+    "restoreMocks": true
   }
 }
