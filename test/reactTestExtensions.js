@@ -19,7 +19,7 @@ export const renderAndWait = (component) =>
   act(async () => (
     reactRoot.render(component)
   )
-);
+  );
 
 export const click = (element) =>
   act(() => element.click());
@@ -82,3 +82,10 @@ export const labelFor = (formElement) =>
 
 export const clickAndWait = async (element) =>
   act(async () => click(element));
+
+export const propsOf = (mockComponent) => {
+  const lastCall = mockComponent.mock.calls[
+    mockComponent.mock.calls.length - 1
+  ];
+  return lastCall[0];
+};
